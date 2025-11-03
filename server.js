@@ -4,6 +4,8 @@ const express = require('express')
 const path = require('path')
 const { connectDB } = require('./src/config/db')
 
+const cors = require('cors')
+
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 // Importar modelos
@@ -38,6 +40,11 @@ const authLimiter = rateLimit({
 })
 
 app.use(limiter)
+
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  credentials: true
+}))
 
 app.use(express.json())
 app.use(express.static('public'))
