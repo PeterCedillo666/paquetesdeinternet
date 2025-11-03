@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Sesión 4</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .login-container.show {
+      opacity: 1;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo h1 {
+      color: #333;
+      margin: 0;
+      font-size: 2.5em;
+    }
+
+    .logo p {
+      color: #666;
+      margin: 5px 0 0 0;
+      font-size: 0.9em;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .mensaje {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .mensaje.success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .mensaje.error {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .links a {
+      color: #667eea;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      margin: 20px 0;
+      text-align: center;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="logo">
+      <h1>🔐</h1>
+      <p>Sesión 4 - Autenticación</p>
+    </div>
+
+    <div id="mensaje" class="mensaje"></div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+      <button type="submit" class="btn" id="loginBtn">Iniciar Sesión</button>
+    </form>
+
+    <div class="divider">— o —</div>
+
+    <div class="links">
+      <a href="/registro">¿No tienes cuenta? Regístrate</a><br><br>
+      <a href="/">← Volver al inicio</a>
+    </div>
+  </div>
+
+  <!-- <script src="./js/login.js"></script> -->
+  <script>
+    const form = document.getElementById('loginForm')
+    const mensaje = document.getElementById('mensaje')
+    const loginBtn = document.getElementById('loginBtn')
+
+    // Función para mostrar mensajes
+    function mostrarMensaje (texto, tipo = 'error') {
+      mensaje.textContent = texto
+      mensaje.className = `mensaje ${tipo}`
+      mensaje.style.display = 'block'
+
+      setTimeout(() => {
+        mensaje.style.display = 'none'
+      }, 5000)
+    }
+
+    // Manejar envío del formulario
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const email = document.getElementById('email').value
+      const password = document.getElementById('password').value
+
+      // Validaciones básicas
+      if (!email || !password) {
+        mostrarMensaje('Por favor completa todos los campos')
+        return
+      }
+
+      // Deshabilitar botón durante el request
+      loginBtn.disabled = true
+      loginBtn.textContent = 'Iniciando sesión...'
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        })
+
+        let data
+        try {
+          data = await response.json()
+        } catch (jsonError) {
+          // Si la respuesta no es JSON (como rate limiter), usar el texto
+          const textResponse = await response.text()
+          data = { message: textResponse }
+        }
+
+
+        console.log(response)
+
+        if (response.ok) {
+          // Login exitoso
+          mostrarMensaje(`¡Bienvenido ${data.usuario.nombre}!`, 'success')
+
+          // Guardar token en localStorage
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('usuario', JSON.stringify(data.usuario))
+
+          // Redirigir al dashboard después de 1 segundo
+          setTimeout(() => {
+            console.log(response)
+            window.location.href = '/dashboard'
+          }, 1000)
+        } else {
+          // Error en login
+          let errorMessage = 'Error al iniciar sesión'
+
+          if (data.message) {
+            errorMessage = data.message
+
+            // Si hay errores específicos de validación, mostrarlos
+            if (data.errors && data.errors.length > 0) {
+              const errorList = data.errors.map(error => `• ${error.msg}`).join('<br>')
+              errorMessage = `${data.message}:<br><br>${errorList}`
+            }
+          } else if (data.mensaje) {
+            errorMessage = data.mensaje
+          }
+
+          mostrarMensaje(errorMessage)
+        }
+      } catch (error) {
+        console.error('Error:', error)
+        mostrarMensaje('Error de conexión. Inténtalo de nuevo.')
+      } finally {
+        // Rehabilitar botón
+        loginBtn.disabled = false
+        loginBtn.textContent = 'Iniciar Sesión'
+      }
+    })
+
+    // Verificar si ya está logueado
+    window.onload = () => {
+      const token = localStorage.getItem('token')
+      const usuario = localStorage.getItem('usuario')
+
+      console.log('Token en localStorage:', token ? 'Existe' : 'No existe')
+      console.log('Usuario en localStorage:', usuario ? 'Existe' : 'No existe')
+
+      if (token && usuario) {
+        try {
+          // Verificar que el usuario sea válido
+          const userData = JSON.parse(usuario)
+          if (userData && userData.id) {
+            console.log('Redirigiendo a dashboard...')
+            window.location.href = '/dashboard'
+            return
+          }
+        } catch (error) {
+          console.log('Error parsing usuario, limpiando localStorage')
+          localStorage.clear()
+        }
+      }
+
+      // Si llegamos aquí, mostrar formulario de login
+      console.log('Mostrando formulario de login')
+      document.querySelector('.login-container').classList.add('show')
+    }
+
+  </script>
+</body>
+
+</html>

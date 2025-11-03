@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - Servicios Digitales</title>
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url('/img/fondo123.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-color: #f8f9fa; /* color de respaldo si la imagen no carga */
+}
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: white;
+      color: #667eea;
+      transform: translateY(-2px);
+    }
+
+    .user-welcome {
+      color: white;
+      margin-right: 1rem;
+      font-weight: bold;
+    }
+
+    .user-name {
+      color: #ffd700;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .hero {
+      text-align: center;
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 3rem;
+    }
+
+    .hero h2 {
+      color: #333;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: #666;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      border-left: 4px solid #667eea;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .service-card h3 {
+      color: #333;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+
+    .service-card p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .service-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+
+    .error {
+      text-align: center;
+      padding: 2rem;
+      color: #dc3545;
+      background: #f8d7da;
+      border-radius: 5px;
+      margin: 1rem 0;
+    }
+
+    .footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    .user-welcome {
+      color: #2c3e50;
+      margin-right: 15px;
+      font-weight: 500;
+    }
+
+    .user-name {
+      color: #27ae60;
+      font-weight: bold;
+    }
+
+    .logout-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <h1>🚀 Servicios Digitales</h1>
+    <nav class="nav-buttons" id="navigation">
+      <!-- La navegación se carga dinámicamente con JavaScript -->
+      <a href="/login" class="btn">Iniciar Sesión</a>
+      <a href="/registro" class="btn">Registrarse</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <h2>Bienvenido a Nuestros Servicios</h2>
+      <p>Descubre una amplia gama de servicios digitales diseñados para impulsar tu negocio.</p>
+    </section>
+
+    <section>
+      <h2 style="text-align: center; color: #333; margin-bottom: 2rem;">Nuestros Servicios</h2>
+      <div id="servicios-lista" class="services-grid">
+        <div class="loading">
+          <p>Cargando servicios...</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Servicios Digitales - Sesión 4 con Autenticación JWT</p>
+  </footer>
+
+  <script>
+    // Función para actualizar la navegación según el estado de autenticación
+    function actualizarNavegacion () {
+      const token = localStorage.getItem('token')
+      const usuarioData = localStorage.getItem('usuario')
+      const navigation = document.getElementById('navigation')
+
+      if (token && usuarioData) {
+        try {
+          const usuario = JSON.parse(usuarioData)
+          if (usuario && usuario.id) {
+            // Usuario logueado - mostrar nombre y opciones
+            navigation.innerHTML = `
+                            <span class="user-welcome">
+                                ¡Hola, <span class="user-name">${usuario.nombre}</span>!
+                            </span>
+                            <a href="/dashboard" class="btn">Ir al Dashboard</a>
+                            <button class="logout-btn" onclick="cerrarSesion()">Cerrar Sesión</button>
+                        `
+            return
+          }
+        } catch (error) {
+          console.log('Error parsing usuario, limpiando localStorage')
+          localStorage.clear()
+        }
+      }
+
+      // Usuario no logueado - mostrar opciones de login/registro
+      navigation.innerHTML = `
+                <a href="/login" class="btn">Iniciar Sesión</a>
+                <a href="/registro" class="btn">Registrarse</a>
+            `
+    }
+
+    // Función para cerrar sesión
+    function cerrarSesion () {
+      localStorage.clear()
+      actualizarNavegacion()
+      // Mostrar mensaje temporal
+      const hero = document.querySelector('.hero h2')
+      const originalText = hero.textContent
+      hero.textContent = '¡Sesión cerrada exitosamente!'
+      setTimeout(() => {
+        hero.textContent = originalText
+      }, 2000)
+    }
+
+    async function cargarServicios () {
+      try {
+        console.log('Intentando cargar servicios...');
+        const response = await fetch('/api/services/publicos');
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+
+        const data = await response.json();
+        console.log('Data recibida:', data);
+
+        const container = document.getElementById('servicios-lista');
+
+        if (data.error) {
+          console.error('Error en respuesta:', data.mensaje);
+          container.innerHTML = `<div class="error"><p>Error al cargar servicios: ${data.mensaje}</p></div>`;
+          return;
+        }
+
+        if (!data.datos || data.datos.length === 0) {
+          console.log('No hay datos de servicios');
+          container.innerHTML = '<div class="loading"><p>No hay servicios disponibles</p></div>';
+          return;
+        }
+
+        console.log('Renderizando', data.datos.length, 'servicios');
+        container.innerHTML = data.datos.map(servicio => `
+                    <div class="service-card">
+                        <h3>${servicio.nombre}</h3>
+                        <p>${servicio.descripcion}</p>
+                        <div class="service-price">$${parseFloat(servicio.precio).toLocaleString('es-MX')}</div>
+                    </div>
+                `).join('');
+
+      } catch (error) {
+        console.error('Error completo:', error);
+        document.getElementById('servicios-lista').innerHTML = `<div class="error"><p>Error de conexión: ${error.message}</p></div>`;
+      }
+    }
+
+    // Cargar servicios y actualizar navegación al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      actualizarNavegacion()
+      cargarServicios()
+    });
+  </script>
+</body>
+
+</html>
+
+
+
+
