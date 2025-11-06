@@ -22,7 +22,7 @@ const obtenerServicios = async (req, res) => {
       servicios = await Service.findAll({
         include: [{
           model: User,
-          as: 'usuario',
+          as: 'usuario',                
           attributes: ['id', 'nombre', 'rol']
         }],
         order: [['createdAt', 'DESC']]
